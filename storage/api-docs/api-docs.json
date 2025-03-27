@@ -1,0 +1,306 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Authentication API",
+        "description": "API для регистрации и авторизации пользователей",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Иван Иванов"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "securepassword"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "securepassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "securepassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный вход в систему",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации"
+                    }
+                }
+            }
+        },
+        "/api/counterparties": {
+            "get": {
+                "tags": [
+                    "Counterparty"
+                ],
+                "summary": "Получить список контрагентов",
+                "description": "Получить список контрагентов.",
+                "operationId": "55525da79d0abe6effd6db576ca28b5d",
+                "responses": {
+                    "200": {
+                        "description": "Список контрагентов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "counterparties": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "ООО Ромашка"
+                                                    },
+                                                    "ogrn": {
+                                                        "type": "string",
+                                                        "example": "1027700132195"
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "г. Москва, ул. Ленина, д. 10"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 42
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Counterparty"
+                ],
+                "summary": "Создать контрагента",
+                "description": "Создать нового контрагента.",
+                "operationId": "8bafb14e59a4d9c46b0a42cd452445e3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "inn",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "inn": {
+                                        "type": "string",
+                                        "example": "7707083893"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 42
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Контрагент успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "counterparty": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "ООО Ромашка"
+                                                },
+                                                "ogrn": {
+                                                    "type": "string",
+                                                    "example": "1027700132195"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "г. Москва, ул. Ленина, д. 10"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 42
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Контрагент не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "counterparty not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Методы аутентификации"
+        },
+        {
+            "name": "Counterparty",
+            "description": "Управление контрагентами"
+        }
+    ]
+}
